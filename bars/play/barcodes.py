@@ -1,4 +1,3 @@
-from bars.play import track_lookup
 import json
 import cv2
 import mutagen
@@ -48,8 +47,5 @@ def find_track(raw_barcodes, mappings, library):
             return (barcode, track_locations)
         track_locations = check_track_tags(barcode, library)
         if len(track_locations) > 0:
-            return (barcode, track_locations)
-        track_locations = track_lookup.lookup_barcode_info(barcode, library)
-        if track_locations is not None:
             return (barcode, track_locations)
     return None, None

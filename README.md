@@ -1,91 +1,34 @@
 # Bars
 
-A project to make to make it easier to physically interact with digital music collections
+A project to make to make it easier to reconcile your physical and digital music collections and make interactions between them easier.
 
-Boundary:
-This program scans physical media and outputs the information needed by a music player to play the tracks on it.
-If a music player is barcode aware, that could be as simple as a barcode
-In reality, it's normally a list of files.
+It's made of 2 parts, playing and generation.
 
-Stretch goal:
-Before a system for reconciling a persons physical and digital music collections.
+## Playing
 
-# Next
-* Run acousticID on libary to try and find barcodes
-** Save results to our config file (not file tags - in case we're wrong)
-** This is a 'run once' kinda thing
-*** Afterwards, should only need to be done on new tracks added to library
-* Even if a track has no accoustic id found, might be worth doing a lookup on
-filename/tags/etc during the 'run once' anyway
+Using a web-camera, it scans physical media for a barcode.
+It then finds the matching track(s) in your digital music collection and plays them.
 
-For users, we should recommend manual tagging with picard/etc
-but strive to make it unnecessary
+## Generation
 
-## Spec
-* User scans a barcode
-** Computer looks up and loads/plays matching track(s) (from existing library)
-*** Support commercial barcodes (on CDs, etc)
-*** Support VLC and Mixxx
-* User can generate their own bar codes
-** And choose what track(s) these match to
-* User can scan barcodes for tracks not in their library
-** Links them to ways to listen to/get the track(s)
-** Should be global and zero config to support scanning someone elses code
-* A way to print codes on a 'cardboard vinyl'
-** Integrating them into pre-made or custom art work
-** Printing in a standard form on good quality material
+When you don't have a physical copy of track(s) in your digital collection (or when the physical media doesn't have a barcode), bars will generate one for you.
 
-## What it can do
+## Physical -> Digitial mapping algorithm
 
-* Scan a barcode from an image or webcam
-* Lookup that barcode on musicbrainz
-** Look up 'title' of result to find file in users library
-* Play that file with VLC
-* Save the barcode->file mapping for next time
+Relies on the digital library being labeled.
+This is either done via:
 
-## Future
-* improve barcode detection
-    * buy hardware
-    * try out techniques in comments
-* generate barcodes that will map to a file
-    * try to make config independant
-        * so they can be used with different machines
-* Inteligently map new barcodes to files
-    * Using musicbrainz and/or by searching music directory
-    * i.e. get track info for barcode from music brains
-    * then compare this to folder names, tags, etc
-    * cache this info
-* generate machine-independant codes
-    * spotify codes
-    * dropbox urls
-* machine-independant interpretation of pre-made codes?
-    * music brain again?
-* option for media player to play scanned tracks
-* make it work with a real barcode scanner
-    * this will need to support qr
-* Scan a barcode on a computer and be able to play the track
-** Track must already be on the computer
-* Generate a barcode for a track on the computer
+* Mappings in the JSON config file
+* Tags on the digital tracks themselves
 
-* Program maps barcode to a local file
-** Could use musicbrainz for lookup
-** https://python-musicbrainzngs.readthedocs.io/en/v0.6/usage/#identification
-* A defined 'bars' file is sym-linked to that file
+When physical media is scanned, it must provide a barcode. The locations above will then be searched for a match and all tracks matching will be loaded for playing.
 
-# Lookup
+Later versions will use 3rd party services to lookup meta-data from barcodes and match to digital tracks without pre-configuration.
 
- 2 pronged approach
- 1) From music -> metadata -> barcode
- 1) From barcode -> metadata -> track
+## When physical media has no barcode
 
-1) Use accoustic ID to generate finter prints of libary
-    acoustid.org
-    https://pypi.org/project/pyacoustid/
-    Then look those up on musicbrainz to find barcode (or mbid)
-    Tag files localy with that info
-    (MVB: store it in json and use that)
+This program will do a reverse lookup, searching JSON config and tags for barcodes.
 
-2) Scan libary/JSON for the barcode from step 1
-    (Make this compatible with people who tagged barcodes via picard)
-    If none found, lookup on musicbrains
-        Then so match based on files names/tags etc
+It will then generate a physical barcode from this that can be printed and scanned to play those tracks.
+
+* This requires there to be a barcode common to all tracks on the physical media, and not used by any tracks NOT on that media. If none exists, this program will invent one.
