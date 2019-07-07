@@ -2,10 +2,24 @@
 
 A project to make to make it easier to physically interact with digital music collections
 
+Boundary:
+This program scans physical media and outputs the information needed by a music player to play the tracks on it.
+If a music player is barcode aware, that could be as simple as a barcode
+In reality, it's normally a list of files.
+
+Stretch goal:
+Before a system for reconciling a persons physical and digital music collections.
+
 # Next
-* Improve track lookup
-** First, by webcam so we can test
-* Add confirmation option for lookups (in case we guess the wrong file)
+* Run acousticID on libary to try and find barcodes
+** Save results to our config file (not file tags - in case we're wrong)
+** This is a 'run once' kinda thing
+*** Afterwards, should only need to be done on new tracks added to library
+* Even if a track has no accoustic id found, might be worth doing a lookup on
+filename/tags/etc during the 'run once' anyway
+
+For users, we should recommend manual tagging with picard/etc
+but strive to make it unnecessary
 
 ## Spec
 * User scans a barcode
@@ -57,3 +71,21 @@ A project to make to make it easier to physically interact with digital music co
 ** Could use musicbrainz for lookup
 ** https://python-musicbrainzngs.readthedocs.io/en/v0.6/usage/#identification
 * A defined 'bars' file is sym-linked to that file
+
+# Lookup
+
+ 2 pronged approach
+ 1) From music -> metadata -> barcode
+ 1) From barcode -> metadata -> track
+
+1) Use accoustic ID to generate finter prints of libary
+    acoustid.org
+    https://pypi.org/project/pyacoustid/
+    Then look those up on musicbrainz to find barcode (or mbid)
+    Tag files localy with that info
+    (MVB: store it in json and use that)
+
+2) Scan libary/JSON for the barcode from step 1
+    (Make this compatible with people who tagged barcodes via picard)
+    If none found, lookup on musicbrains
+        Then so match based on files names/tags etc

@@ -1,8 +1,9 @@
 import os
 import json
 import requests
+import mutagen
 
-def lookup_barcode_info(barcode, library, debug=True):
+def lookup_barcode_info(barcode, library, debug=False):
     # https://musicbrainz.org/doc/Development/JSON_Web_Service#Release
     # https://musicbrainz.org/doc/Release
     # TODO: https://www.discogs.com/developers/#page:database,header:database-search
@@ -17,7 +18,8 @@ def lookup_barcode_info(barcode, library, debug=True):
         name = release_info['release-group']['title']
         for dirpath, dirnames, filenames in os.walk(library, followlinks=True):
             if name in dirnames:
-                return os.path.join(dirpath, name)
+                # TODO: return list of files instead
+                return [os.path.join(dirpath, name)]
     return None
 
 def lookup_track_info(track_location):

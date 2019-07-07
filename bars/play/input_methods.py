@@ -28,7 +28,7 @@ def extract_from_image(scan_image, debug=False):
 
 def from_webcam(debug=True):
 
-    video_capture = cv2.VideoCapture(0)
+    video_capture = cv2.VideoCapture(2)
 
     ret, scan_image = video_capture.read()
 

@@ -50,14 +50,15 @@ def set_args(
 
     return parser
 
-def save(barcode, track_location, config):
-    config['mappings'][barcode] = track_location
+def save(barcode, track_locations, config):
+    config['mappings'][barcode] = track_locations
     with open('./config.json', 'w+') as config_file:
         json.dump(config, config_file, indent=4, sort_keys=True)
 
 def run(args, config):
 
     loop_input = True
+    previous_barcode = None
 
     while loop_input:
 
@@ -69,13 +70,21 @@ def run(args, config):
             scan_info, loop_input = input_methods.file_monitoring(args.input_file)
 
         if scan_info is not None:
-            track_location = barcodes.find_track(scan_info, args.mappings, args.library)
-        if track_location is not None:
-            save(barcode, track_location, config)
+            barcode, track_locations = barcodes.find_track(scan_info, args.mappings, args.library)
 
-            if args.output_method == 'vlc':
-                args.output_method = output_methods.vlc_output
-            elif args.output_method == 'symlink':
-                args.output_method = output_methods.symlink_output
+            if track_locations is None:
+                print('Search failed')
+            elif barcode != previous_barcode:
+                print('Found {}'.format(barcode))
+                for track in track_locations:
+                    print(track)
+                
+                save(barcode, track_locations, config)
 
-            args.output_method(track_location, args.output_folder)
+                if args.output_method == 'vlc':
+                    args.output_method = output_methods.vlc_output
+                elif args.output_method == 'symlink':
+                    args.output_method = output_methods.symlink_output
+
+                args.output_method(track_locations, args.output_folder)
+                previous_barcode = barcode
