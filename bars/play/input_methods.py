@@ -1,4 +1,4 @@
-from bars.play import barcodes
+from bars.play import lookup
 import time
 from pyzbar import pyzbar
 import cv2
@@ -28,9 +28,12 @@ def extract_from_image(scan_image, debug=False):
 
 def from_webcam(debug=True):
 
-    video_capture = cv2.VideoCapture(2)
+    # todo: check camera(s) exist, let user choose which to use
+    # https://stackoverflow.com/questions/8044539/listing-available-devices-in-python-opencv
 
-    ret, scan_image = video_capture.read()
+    video_capture = cv2.VideoCapture(0)
+
+    _, scan_image = video_capture.read()
 
     if debug:
         cv2.imwrite('view.png',  scan_image)

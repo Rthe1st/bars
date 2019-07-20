@@ -1,10 +1,8 @@
 {
     "input-file": "./sample_barcode.jpg",
-    "input-method": "file",
-    "library": "/home/mehow/Dropbox/music",
-    "mappings": {
-        "5012093551029": "/home/mehow/Dropbox/music/The Prodigy/Experience"
-    },
+    "input-method": "webcam",
+    "library": "~/Music/",
+    "mappings": {},
     "output-folder": "./tracks",
-    "output-method": "symlink"
+    "output-method": "vlc"
 }

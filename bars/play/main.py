@@ -11,7 +11,7 @@ import json
 import os
 import os.path
 
-from bars.play import input_methods, barcodes, output_methods
+from bars.play import input_methods, lookup, output_methods
 
 
 def set_args(
@@ -50,8 +50,9 @@ def set_args(
 
     return parser
 
-def save(barcode, track_locations, config):
-    config['mappings'][barcode] = track_locations
+def save(barcode, relative_track_locations, config):
+
+    config['mappings'][barcode] = relative_track_locations
     with open('./config.json', 'w+') as config_file:
         json.dump(config, config_file, indent=4, sort_keys=True)
 
@@ -70,21 +71,28 @@ def run(args, config):
             scan_info, loop_input = input_methods.file_monitoring(args.input_file)
 
         if scan_info is not None:
-            barcode, track_locations = barcodes.find_track(scan_info, args.mappings, args.library)
+            barcode, relative_track_locations = lookup.find_track(scan_info, args.mappings, args.library)
 
-            if track_locations is None:
+            if relative_track_locations is None:
                 print('Search failed')
             elif barcode != previous_barcode:
                 print('Found {}'.format(barcode))
-                for track in track_locations:
+                for track in relative_track_locations:
                     print(track)
                 
-                save(barcode, track_locations, config)
+                save(barcode, relative_track_locations, config)
 
                 if args.output_method == 'vlc':
                     args.output_method = output_methods.vlc_output
                 elif args.output_method == 'symlink':
                     args.output_method = output_methods.symlink_output
 
-                args.output_method(track_locations, args.output_folder)
+                library = os.path.expanduser(config["library"])
+
+                absolute_track_locations = map(
+                    lambda location: os.path.join(library, location),
+                    relative_track_locations
+                )
+
+                args.output_method(absolute_track_locations, args.output_folder)
                 previous_barcode = barcode

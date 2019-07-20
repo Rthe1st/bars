@@ -1,6 +1,5 @@
 import os
 import subprocess
-from bars.play import track_lookup
 
 def symlink_output(track_locations, output_folder):
     try:
