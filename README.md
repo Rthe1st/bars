@@ -26,6 +26,13 @@ If it can't find matching tracks, it'll ask you what tracks that barcode maps to
 
 When you don't have a physical copy of track(s) in your digital collection (or when the physical media doesn't have a barcode), bars will generate one for you.
 
+## Build/distribution
+
+```bash
+pyinstaller __main__.spec
+./dist/__main__/__main__ -h
+```
+
 ## Physical -> Digitial mapping algorithm
 
 Relies on the digital library being labeled.

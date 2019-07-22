@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "cc47b1096827a466c60a2c7c39460b1120778be1e1bee9fe0193b4768b8c5abe"
+            "sha256": "885a384889cf4792564334e0ac9a25506e3520a6a94601f5ac50ce4904f2e9f6"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,6 +16,13 @@
         ]
     },
     "default": {
+        "altgraph": {
+            "hashes": [
+                "sha256:d6814989f242b2b43025cba7161fc1b8fb487a62cd49c49245d6fd01c18ac997",
+                "sha256:ddf5320017147ba7b810198e0b6619bd7b5563aa034da388cea8546b877f9b0c"
+            ],
+            "version": "==0.16.1"
+        },
         "audioread": {
             "hashes": [
                 "sha256:073904fabc842881e07bd3e4a5776623535562f70b1655b635d22886168dd168"
@@ -165,6 +172,13 @@
             ],
             "index": "pypi",
             "version": "==1.1.7"
+        },
+        "pyinstaller": {
+            "hashes": [
+                "sha256:ee7504022d1332a3324250faf2135ea56ac71fdb6309cff8cd235de26b1d0a96"
+            ],
+            "index": "pypi",
+            "version": "==3.5"
         },
         "python-barcode": {
             "hashes": [

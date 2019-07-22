@@ -31,7 +31,7 @@ def from_webcam(debug=True):
     # todo: check camera(s) exist, let user choose which to use
     # https://stackoverflow.com/questions/8044539/listing-available-devices-in-python-opencv
 
-    video_capture = cv2.VideoCapture(0)
+    video_capture = cv2.VideoCapture(-1)
 
     _, scan_image = video_capture.read()
 

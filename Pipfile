@@ -19,6 +19,7 @@ pyacoustid = "*"
 audioread = "*"
 easygui = "*"
 fleep = "*"
+pyinstaller = "*"
 
 [requires]
 python_version = "3.6"
