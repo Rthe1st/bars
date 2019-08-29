@@ -1,6 +1,6 @@
 import json
 import argparse
-import bars.play.main
+import bars.generate.main
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Scan barcodes for playing music')
@@ -8,7 +8,7 @@ if __name__ == "__main__":
     with open('./config.json') as config_file:
         config = json.load(config_file)
     
-    parser = bars.play.main.set_args(config)
+    parser = bars.generate.main.set_args(config)
 
     args = parser.parse_args()
 

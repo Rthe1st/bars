@@ -18,14 +18,13 @@ if __name__ == "__main__":
     with open('./config.json') as config_file:
         config = json.load(config_file)
     
-    subparsers = parser.add_subparsers(help='sub-command help')
+    subparsers = parser.add_subparsers(help='sub-command help', dest="mode")
 
     play_parser = subparsers.add_parser('play', help='play tracks you scan')
     play.main.set_args(config, play_parser)
 
     generate_parser = subparsers.add_parser('generate', help='generate barcodes')
     generate.main.set_args(config, generate_parser)
-
 
     args = parser.parse_args()
 

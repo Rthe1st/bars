@@ -18,9 +18,6 @@ def set_args(
     config,
     parser=argparse.ArgumentParser(description='Scan (and generate) barcodes for playing music')
 ):
-    # TODO: work out the proper way to detect which subparser was used
-    parser.add_argument("--mode", required=False, default='play')
-
     parser.add_argument(
         '--input-method',
         choices=['webcam', 'file', 'file-monitoring'],
