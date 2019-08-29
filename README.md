@@ -29,8 +29,8 @@ When you don't have a physical copy of track(s) in your digital collection (or w
 ## Build/distribution
 
 ```bash
-pyinstaller __main__.spec
-./dist/__main__/__main__ -h
+pyinstaller bars.spec
+./dist/bars/bars.bin -h
 ```
 
 ## Physical -> Digitial mapping algorithm
@@ -39,8 +39,8 @@ Relies on the digital library being labeled.
 This is either done via:
 
 * Mappings in the JSON config file
-** These mappings are wildcarded filepaths
-** Wildcards will be expanded and overwritten to full track list when the program is run (todo: maybe change that)
+  * These mappings are wildcarded filepaths
+  * Wildcards will be expanded and overwritten to full track list when the program is run (todo: maybe change that)
 * Tags on the digital tracks themselves
 
 When physical media is scanned, it must provide a barcode. The locations above will then be searched for a match and all tracks matching will be loaded for playing.
