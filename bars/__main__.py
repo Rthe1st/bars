@@ -1,12 +1,10 @@
 import argparse
-from bars import play
-import bars.play.main
-from bars import generate
-import bars.generate.main
 import json
-
 import signal
 import sys
+
+from bars import play, generate
+
 def signal_handler(sig, frame):
         print('You pressed Ctrl+C!')
         sys.exit(0)
@@ -32,3 +30,5 @@ if __name__ == "__main__":
         play.main.run(args, config)
     elif args.mode == 'generate':
         generate.main.run(args, config)
+    else:
+        print("No mode chosen, 'play' or 'generate'")
