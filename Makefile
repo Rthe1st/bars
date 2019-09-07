@@ -7,4 +7,7 @@ run:
 run-packaged: build
 	./dist/bars/bars.bin
 
-.PHONY: build run run-packaged
+test:
+	python -m unittest discover
+
+.PHONY: build run run-packaged test
