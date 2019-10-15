@@ -8,67 +8,35 @@ import argparse
 import subprocess
 import requests
 import json
-import os
 import os.path
 
 from bars.play import input_methods, lookup, output_methods
 
-
 def set_args(
-    config,
     parser=argparse.ArgumentParser(description='Scan (and generate) barcodes for playing music')
 ):
-    parser.add_argument(
-        '--input-method',
-        choices=['webcam', 'file', 'file-monitoring'],
-        default=config['input-method']
-    )
-    parser.add_argument('--input-file', required=False, default=config['input-file'])
-    parser.add_argument('--library', required=False, default=config['library'])
-    parser.add_argument(
-        '--output-method',
-        choices=['vlc', 'symlink'],
-        required=False,
-        default=config['output-method']
-    )
-
-    parser.add_argument(
-        '--output-folder',
-        required=False,
-        default=config['output-folder']
-    )
-
-    # TODO: correctly parse strings feed to this as dicts
-    parser.add_argument(
-        '--mappings',
-        required=False,
-        default=config['mappings']
-    )
 
     return parser
 
-def save(barcode, relative_track_locations, config):
 
-    config['mappings'][barcode] = relative_track_locations
-    with open('./config.json', 'w+') as config_file:
-        json.dump(config, config_file, indent=4, sort_keys=True)
-
-def run(args, config):
+def run(config_manager):
 
     loop_input = True
     previous_barcode = None
 
     while loop_input:
 
-        if args.input_method == 'webcam':
+        input_method = config_manager.read_config("input-method")
+
+        if input_method == 'webcam':
             scan_info, loop_input = input_methods.from_webcam()
-        elif args.input_method == 'file':
-            scan_info, loop_input = input_methods.from_image(args.input_file)
-        elif args.input_method == 'file-monitoring':
-            scan_info, loop_input = input_methods.file_monitoring(args.input_file)
+        elif input_method == 'file':
+            scan_info, loop_input = input_methods.from_image(config_manager.read_config("input-file"))
+        elif input_method == 'file-monitoring':
+            scan_info, loop_input = input_methods.file_monitoring(config_manager.read_config("input-file"))
 
         if scan_info is not None:
-            barcode, relative_track_locations = lookup.find_track(scan_info, args.mappings, args.library)
+            barcode, relative_track_locations = lookup.find_track(scan_info, config_manager)
 
             if relative_track_locations is None:
                 print('Search failed')
@@ -77,19 +45,22 @@ def run(args, config):
                 for track in relative_track_locations:
                     print(track)
                 
-                save(barcode, relative_track_locations, config)
+                config_manager.write_data(barcode, relative_track_locations)
 
-                if args.output_method == 'vlc':
-                    args.output_method = output_methods.vlc_output
-                elif args.output_method == 'symlink':
-                    args.output_method = output_methods.symlink_output
+                print('outputm ethod')
+                output_method = config_manager.read_config("output-method")
 
-                library = os.path.expanduser(config["library"])
+                if output_method == 'vlc':
+                    output_method = output_methods.vlc_output
+                elif output_method == 'symlink':
+                    output_method = output_methods.symlink_output
+
+                library = os.path.expanduser(config_manager.read_config("library"))
 
                 absolute_track_locations = map(
                     lambda location: os.path.join(library, location),
                     relative_track_locations
                 )
 
-                args.output_method(absolute_track_locations, args.output_folder)
+                output_method(absolute_track_locations, config_manager.read_config("output-folder"))
                 previous_barcode = barcode

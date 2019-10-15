@@ -2,8 +2,10 @@ import argparse
 import json
 import signal
 import sys
+import os
+import shutil
 
-from bars import play, generate
+from bars import play, generate,config_manager
 
 def signal_handler(sig, frame):
         print('You pressed Ctrl+C!')
@@ -13,22 +15,25 @@ signal.signal(signal.SIGINT, signal_handler)
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Scan and generate barcodes for playing music')
 
-    with open('./config.json') as config_file:
-        config = json.load(config_file)
-    
+    # todo: put this somewhere more accessible to users, like home directory
+    parser.add_argument("--config-file", default='./settings/config.json')
+    parser.add_argument("--data-file", default='./settings/data.json')
+
     subparsers = parser.add_subparsers(help='sub-command help', dest="mode")
 
     play_parser = subparsers.add_parser('play', help='play tracks you scan')
-    play.main.set_args(config, play_parser)
+    play.main.set_args(play_parser)
 
     generate_parser = subparsers.add_parser('generate', help='generate barcodes')
-    generate.main.set_args(config, generate_parser)
+    generate.main.set_args(generate_parser)
 
     args = parser.parse_args()
 
+    a_config_manager = config_manager.ConfigManager(args.config_file, args.data_file)
+
     if args.mode == 'play':
-        play.main.run(args, config)
+        play.main.run(a_config_manager)
     elif args.mode == 'generate':
-        generate.main.run(args, config)
+        generate.main.run(args)
     else:
         print("No mode chosen, 'play' or 'generate'")

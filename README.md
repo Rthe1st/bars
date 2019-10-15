@@ -29,17 +29,17 @@ When you don't have a physical copy of track(s) in your digital collection (or w
 ## Build/distribution
 
 ```bash
-pyinstaller bars.spec
+make build
 ./dist/bars/bars.bin -h
 ```
 
-## Physical -> Digitial mapping algorithm
+## Physical -> Digital mapping algorithm
 
 Relies on the digital library being labeled.
 This is either done via:
 
 * Mappings in the JSON config file
-  * These mappings are wildcarded filepaths
+  * These mappings are wildcarded file paths
   * Wildcards will be expanded and overwritten to full track list when the program is run (todo: maybe change that)
 * Tags on the digital tracks themselves
 

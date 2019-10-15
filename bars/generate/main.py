@@ -17,7 +17,6 @@ from barcode.writer import ImageWriter
 from bars.play import input_methods
 
 def set_args(
-    config,
     parser=argparse.ArgumentParser(description='Generate barcodes for playing music')
 ):
 
@@ -25,12 +24,7 @@ def set_args(
 
     return parser
 
-def save(barcode, track_location, config):
-    config['mappings'][barcode] = track_location
-    with open('./config.json', 'w+') as config_file:
-        json.dump(config, config_file, indent=4, sort_keys=True)
-
-def run(args, config):
+def run(args):
 
     release_id = 'b2ac073a-4b6b-3fb2-95e7-c3434792b46a'
 
@@ -41,7 +35,7 @@ def run(args, config):
     correct_barcode = response['barcode']
 
     ean = barcode.EAN13(response['barcode'], writer=ImageWriter())
-    fullname = ean.save('ean13_barcode')
+    _ = ean.save('ean13_barcode')
 
     response = requests.get(
         'http://coverartarchive.org/release/{}/'.format(release_id)

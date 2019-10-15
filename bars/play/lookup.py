@@ -38,12 +38,6 @@ def check_track_tags(barcode, library):
 
     return matched_tracks
 
-def check_json_config(barcode, mappings):
-    if barcode in mappings:
-        track_locations = mappings[barcode]
-        return track_locations
-    return []
-
 def ask_user(library):
     folder = easygui.diropenbox(default=library)
 
@@ -61,7 +55,7 @@ def ask_user(library):
     return locations
 
 
-def find_track(raw_barcodes, mappings, library):
+def find_track(raw_barcodes, config_manager):
 
     print('processing')
     
@@ -83,24 +77,25 @@ def find_track(raw_barcodes, mappings, library):
             barcodes.append(barcode[1:])
 
     for barcode in barcodes:
-        track_locations = check_json_config(barcode, mappings)
-        if len(track_locations) > 0:
+        track_locations = config_manager.read_data(barcode)
+        if track_locations is not None:
             print("Found via mappings")
             # we don't sort results from mappings
             # so users can manual sort entries where our sorting gets it wrong
             return (barcode, track_locations)
 
     for barcode in barcodes:
-        track_locations = check_track_tags(barcode, library)
+        track_locations = check_track_tags(barcode, config_manager.read_config("library"))
         if len(track_locations) > 0:
             print(" Found via tags")
             track_locations = sort.tracks(track_locations)
-            return (barcode, make_locations_relative(track_locations, library))
+            return (barcode, make_locations_relative(track_locations, config_manager.read_config("library")))
 
-    track_locations = ask_user(library)
+    print("Couldn't find track automaicly, please choose its file/folder")
+    track_locations = ask_user(config_manager.read_config("library"))
     if len(track_locations) > 0:
         print(" Found via user")
         track_locations = sort.tracks(track_locations)
-        return (barcode, make_locations_relative(track_locations, library))
+        return (barcode, make_locations_relative(track_locations, config_manager.read_config("library")))
     
     return None, None
