@@ -47,7 +47,7 @@ def run(config_manager):
                 
                 config_manager.write_data(barcode, relative_track_locations)
 
-                print('outputm ethod')
+                print('output method')
                 output_method = config_manager.read_config("output-method")
 
                 if output_method == 'vlc':

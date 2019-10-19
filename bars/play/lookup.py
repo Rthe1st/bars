@@ -76,6 +76,8 @@ def find_track(raw_barcodes, config_manager):
             # Add UPC equivalent 
             barcodes.append(barcode[1:])
 
+    print('found barcodes: {}'.format(barcodes))
+
     for barcode in barcodes:
         track_locations = config_manager.read_data(barcode)
         if track_locations is not None:
@@ -91,7 +93,7 @@ def find_track(raw_barcodes, config_manager):
             track_locations = sort.tracks(track_locations)
             return (barcode, make_locations_relative(track_locations, config_manager.read_config("library")))
 
-    print("Couldn't find track automaicly, please choose its file/folder")
+    print("Couldn't find track automatically, please choose its file/folder")
     track_locations = ask_user(config_manager.read_config("library"))
     if len(track_locations) > 0:
         print(" Found via user")

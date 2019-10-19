@@ -1,0 +1,16 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "http://rthe1st.com/bars/schemas/data-schema.json",
+    "type": "object",
+    "propertyNames": {
+        "pattern": "[0-9]+"
+    },
+    "additionalProperties": {
+        "type": "array",
+        "items": {
+            "type": "string",
+            "minItems": 1,
+            "uniqueItems": true
+        }
+    }
+}

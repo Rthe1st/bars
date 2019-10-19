@@ -19,6 +19,8 @@ if __name__ == "__main__":
     parser.add_argument("--config-file", default='./settings/config.json')
     parser.add_argument("--data-file", default='./settings/data.json')
 
+    parser.add_argument("-r", "--reset", action='store_true')
+
     subparsers = parser.add_subparsers(help='sub-command help', dest="mode")
 
     play_parser = subparsers.add_parser('play', help='play tracks you scan')
@@ -29,7 +31,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    a_config_manager = config_manager.ConfigManager(args.config_file, args.data_file)
+    a_config_manager = config_manager.ConfigManager(args.config_file, args.data_file, args.reset)
 
     if args.mode == 'play':
         play.main.run(a_config_manager)

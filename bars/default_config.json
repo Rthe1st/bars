@@ -2,6 +2,6 @@
     "input-file": "./sample_barcode.jpg",
     "input-method": "webcam",
     "library": "~/Music/",
-    "output-folder": "./tracks",
+    "output-folder": "./tracks/",
     "output-method": "vlc"
 }

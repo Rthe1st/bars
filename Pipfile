@@ -20,6 +20,7 @@ audioread = "*"
 easygui = "*"
 fleep = "*"
 pyinstaller = "*"
+jsonschema = "*"
 
 [requires]
 python_version = "3.7"

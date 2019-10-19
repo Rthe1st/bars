@@ -1,0 +1,33 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "http://rthe1st.com/bars/schemas/data-schema.json",
+    "type": "object",
+    "properties": {
+        "input-file": {
+            "type": "string"
+        },
+        "input-method": {
+            "type": "string",
+            "enum": [
+                "webcam",
+                "file",
+                "file-monitoring"
+            ]
+        },
+        "library": {
+            "type": "string",
+            "pattern": ".*/$"
+        },
+        "output-folder": {
+            "type": "string",
+            "pattern": ".*/$"
+        },
+        "output-method": {
+            "type": "string",
+            "enum": [
+                "vlc",
+                "symlink"
+            ]
+        }
+    }
+}
