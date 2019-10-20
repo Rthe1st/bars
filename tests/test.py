@@ -19,7 +19,6 @@ class InputTestCase(unittest.TestCase):
             with self.subTest(i=(test_file, correct_barcode)):
                 image = cv2.imread(os.path.join('./tests/images', test_file))
                 scan_info = extract_from_image(image)
-                print(scan_info)
                 self.assertIsNotNone(scan_info)
                 self.assertEqual(len(scan_info), 1)
                 self.assertEqual(scan_info[0].data, correct_barcode)

@@ -2,7 +2,7 @@ build:
 	pyinstaller bars.spec -y
 
 run:
-	python -m bars
+	python -m bars play
 
 run-packaged: build
 	./dist/bars/bars.bin
