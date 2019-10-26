@@ -15,9 +15,11 @@ jobs:
         python-version: 3.7
     - name: Install dependencies
       run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y libzbar0 python3-tk python-tk
         python -m pip install --upgrade pip
         pip install pipenv
-        pipenv install .
+        pipenv install
     - name: Run unit tests
       run: |
-        python -m unittest discover
+        python -m tkinter
